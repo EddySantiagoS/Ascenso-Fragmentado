@@ -62,7 +62,15 @@ public class CharacterSelector : MonoBehaviour
         else
             maleCharacter.SetActive(false);
 
-        // ✅ Desactivar este script para evitar más clics
+        // Obtener el personaje activo
+        GameObject activePlayer = (character == "Male") ? maleCharacter : femaleCharacter;
+
+        // Asignarlo al BookInteraction
+        BookInteraction book = FindFirstObjectByType<BookInteraction>();
+        if (book != null)
+            book.SetPlayer(activePlayer.transform);
+
+        // Desactivar este script para evitar más clics
         this.enabled = false;
 
         // Iniciar movimiento de cámara
