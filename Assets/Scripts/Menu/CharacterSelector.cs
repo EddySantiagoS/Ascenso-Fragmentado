@@ -22,7 +22,7 @@ public class CharacterSelector : MonoBehaviour
     {
         mainCam = Camera.main;
 
-        // Aseguramos que ambos personajes estén visibles
+        // Aseguramos que ambos personajes estï¿½n visibles
         maleCharacter.SetActive(true);
         femaleCharacter.SetActive(true);
     }
@@ -33,7 +33,7 @@ public class CharacterSelector : MonoBehaviour
         // Usamos el nuevo Input System:
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Obtener posición actual del mouse
+            // Obtener posiciï¿½n actual del mouse
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Ray ray = mainCam.ScreenPointToRay(mousePos);
 
@@ -62,7 +62,10 @@ public class CharacterSelector : MonoBehaviour
         else
             maleCharacter.SetActive(false);
 
-        // Iniciar movimiento de cámara
+        // âœ… Desactivar este script para evitar mÃ¡s clics
+        this.enabled = false;
+
+        // Iniciar movimiento de cÃ¡mara
         StartCoroutine(MoveCameraBehindCharacter());
     }
     IEnumerator MoveCameraBehindCharacter()
@@ -90,5 +93,8 @@ public class CharacterSelector : MonoBehaviour
         }
 
         transitioning = false;
+
+        var follow = mainCam.gameObject.AddComponent<CameraFollow>();
+        follow.target = targetChar.transform;
     }
 }

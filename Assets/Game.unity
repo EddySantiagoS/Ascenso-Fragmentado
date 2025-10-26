@@ -2254,6 +2254,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1752310950642210314, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2278,6 +2282,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4fa63657eeb080d46a0cb511f25d78e0, type: 2}
     - target: {fileID: 5892283089725906527, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2320,6 +2328,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1132802868}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1132802869}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1132802871}
   m_SourcePrefab: {fileID: 100100000, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
 --- !u!4 &1132802863 stripped
 Transform:
@@ -2349,13 +2363,59 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.79
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.96, z: 0}
+--- !u!114 &1132802869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132802864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff1f6eba90d4064494e4b5e5a9476d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  walkSpeed: 5
+  runSpeed: 8
+  gravity: -9.81
+  jumpHeight: 2
+--- !u!114 &1132802871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132802864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 94132062303fcb94aade5a077aed4ea7, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1141489182
 GameObject:
   m_ObjectHideFlags: 0
@@ -4020,6 +4080,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1752310950642210314, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -4044,6 +4108,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9a720d2a604bcde4993b9832d53417e3, type: 2}
     - target: {fileID: 5892283089725906527, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -4086,6 +4154,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1917818445}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1917818448}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1917818447}
   m_SourcePrefab: {fileID: 100100000, guid: 583998a8ff79f0f41a6de5c1bcf78d94, type: 3}
 --- !u!4 &1917818440 stripped
 Transform:
@@ -4115,13 +4189,59 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.79
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.96, z: 0}
+--- !u!114 &1917818447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917818441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 94132062303fcb94aade5a077aed4ea7, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1917818448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917818441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff1f6eba90d4064494e4b5e5a9476d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  walkSpeed: 5
+  runSpeed: 8
+  gravity: -9.81
+  jumpHeight: 2
 --- !u!1 &2055153537
 GameObject:
   m_ObjectHideFlags: 0
