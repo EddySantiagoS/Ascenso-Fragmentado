@@ -175,6 +175,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log($"🧗‍♂️ Iniciando escalada en {hit.collider.name}");
             isClimbing = true;
+            animator.speed = 0.5f;
             animator.SetBool("IsClimbing", true);
                 animator.Play("Climbing", 0, 0f);
             velocity = Vector3.zero;
