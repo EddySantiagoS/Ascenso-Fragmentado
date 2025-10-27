@@ -19,6 +19,15 @@ public class PlayerMovement : MonoBehaviour
     private PlayerControls controls;
     private Vector2 moveInput;
 
+    [Header("Escalada")]
+    public float climbCheckDistance = 1f;   // Distancia del raycast
+    public float climbSpeed = 2f;           // Velocidad de subida
+    public bool isClimbing = false;
+    public LayerMask climbableLayer;        // Capa de muros escalables
+
+    private float climbReleaseTimer = 0f;
+    public float climbReleaseDelay = 0.3f; // medio segundo de tolerancia
+
     void Awake()
     {
         controls = new PlayerControls();
@@ -33,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Saltar
         controls.Player.Jump.performed += ctx => Jump();
+
+    
+        // Escalar
+        controls.Player.Climb.performed += ctx => TryClimb();
+        controls.Player.Climb.canceled += ctx => StopClimb();
     }
 
     void OnEnable() => controls.Player.Enable();
@@ -84,9 +98,50 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetBool("IsRunning", isRunning);
 
-        // --- Gravedad ---
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        if (isClimbing)
+        {
+            RaycastHit hit;
+            Vector3 origin = transform.position + Vector3.up * 1f;
+
+            // Si deja de tocar el muro, termina la escalada
+            if (!Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
+            {
+                Debug.Log("🧱 Ya no hay muro al frente. Deteniendo escalada.");
+
+                // 💡 Si todavía no está en el suelo, lo subimos un poco
+                if (!controller.isGrounded)
+                {
+                    controller.Move(Vector3.up * 1f); // lo sube para quedar sobre el borde
+                    Debug.Log("⬆️ Ajustando posición para quedar sobre el borde");
+                }
+
+                StopClimb();
+            }
+            else
+            {
+                // Solo sube si sigue presionando las teclas
+                bool pressingForward = moveInput.y > 0.5f;
+                bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
+
+                if (pressingForward && pressingCtrl)
+                {
+                    controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    Debug.Log("⏸️ Se soltó W o Ctrl. Deteniendo escalada.");
+                    StopClimb();
+                }
+            }
+
+            return; // evita que se ejecute el resto del movimiento
+        }
+        
+        if (!isClimbing)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
     }
 
     void Jump()
@@ -103,4 +158,36 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetTrigger("Jump2");
         }
     }
+
+    void TryClimb()
+{
+    bool pressingForward = moveInput.y > 0.5f;
+    bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
+
+    if (pressingForward && pressingCtrl && !isClimbing)
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 1f;
+
+        Debug.DrawRay(origin, transform.forward * climbCheckDistance, Color.red, 1f);
+
+        if (Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
+        {
+            Debug.Log($"🧗‍♂️ Iniciando escalada en {hit.collider.name}");
+            isClimbing = true;
+            animator.SetBool("IsClimbing", true);
+                animator.Play("Climbing", 0, 0f);
+            velocity = Vector3.zero;
+        }
+    }
+}
+
+void StopClimb()
+{
+    if (isClimbing)
+    {
+        isClimbing = false;
+        animator.SetBool("IsClimbing", false);
+    }
+}
 }
