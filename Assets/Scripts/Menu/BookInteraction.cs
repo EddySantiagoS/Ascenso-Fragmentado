@@ -47,7 +47,11 @@ public class BookInteraction : MonoBehaviour
 
         // Intentar encontrar al jugador
         GameObject p = GameObject.FindGameObjectWithTag(playerTag);
-        if (p != null) player = p.transform;
+        if (p != null)
+        {
+            player = p.transform;
+            playerMovement = player.GetComponent<PlayerMovement>();
+        }
     }
 
     void Update()
@@ -65,7 +69,6 @@ public class BookInteraction : MonoBehaviour
                 HideHologram();
         }
 
-        // --- Entrada de teclado con el nuevo Input System ---
         if (Keyboard.current == null) return;
 
         // Abrir menú (E)
@@ -81,10 +84,10 @@ public class BookInteraction : MonoBehaviour
         }
     }
 
-    // Permite asignar el jugador desde otro script (por ejemplo, selección de personaje)
     public void SetPlayer(Transform newPlayer)
     {
         player = newPlayer;
+        playerMovement = player.GetComponent<PlayerMovement>();
         Debug.Log($"Jugador asignado manualmente: {newPlayer.name}");
     }
 
@@ -137,38 +140,41 @@ public class BookInteraction : MonoBehaviour
 
     void ActivateBookView()
     {
-        Canvas canvas = hologramUI.GetComponentInParent<Canvas>();
         if (canvas == null) return;
 
-        // Guardamos la transformacion actual del canvas en el mundo
+        // Guardamos la transformación actual del canvas en el mundo
         savedPosition = canvas.transform.position;
         savedRotation = canvas.transform.rotation;
         savedScale = canvas.transform.localScale;
 
         inBookView = true;
 
+        // Aseguramos que la escala no esté invertida antes del Overlay
+        Vector3 fixedScale = canvas.transform.localScale;
+        fixedScale.x = Mathf.Abs(fixedScale.x);
+        fixedScale.y = Mathf.Abs(fixedScale.y);
+        fixedScale.z = Mathf.Abs(fixedScale.z);
+        canvas.transform.localScale = fixedScale;
+
+        // Reiniciamos la rotación para evitar reflejos en pantalla
+        canvas.transform.rotation = Quaternion.identity;
+
         // Cambiar a Overlay
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.worldCamera = null;
 
-        // Corregir orientación (invertir eje Z)
-        Vector3 flip = canvas.transform.localScale;
-        flip.z *= -1;
-        canvas.transform.localScale = flip;
-
-        // Activar cursor y bloquear control del jugador
+        // Mostrar cursor y bloquear movimiento
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
         if (playerMovement != null)
             playerMovement.enabled = false;
 
-        Debug.Log("Vista del libro activada (modo Overlay).");
+        Debug.Log("Vista del libro activada (modo Overlay, rotación previa aplicada).");
     }
 
     void DeactivateBookView()
     {
-        Canvas canvas = hologramUI.GetComponentInParent<Canvas>();
         if (canvas == null) return;
 
         inBookView = false;
@@ -177,12 +183,12 @@ public class BookInteraction : MonoBehaviour
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.worldCamera = originalCamera;
 
-        // Restaurar posición y orientación
+        // Restaurar posición, rotación y escala exactas
         canvas.transform.position = savedPosition;
         canvas.transform.rotation = savedRotation;
         canvas.transform.localScale = savedScale;
 
-        // Ocultar cursor y devolver control al jugador
+        // Ocultar cursor y restaurar movimiento
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 

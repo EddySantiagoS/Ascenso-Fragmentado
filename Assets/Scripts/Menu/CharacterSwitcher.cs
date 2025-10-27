@@ -1,5 +1,7 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
@@ -7,45 +9,80 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public GameObject maleCharacter;
     public GameObject femaleCharacter;
 
-    [Header("Render Texture")]
-    public Camera characterPreviewCamera; // C·mara que renderiza al personaje
-    public RawImage previewImage; // Donde se muestra el RenderTexture
+    [Header("Render Texture (vista del libro)")]
+    public Camera characterPreviewCamera; // C√°mara que renderiza al personaje
+    public RawImage previewImage;         // Donde se muestra el RenderTexture
+
+    [Header("C√°mara del juego (tercera persona)")]
+    public float cameraDistance = 3f;
+    public float cameraHeight = 1.7f;
+    public float cameraFollowSpeed = 10f;
+    public float cameraRotateSpeed = 10f;
 
     private bool isMaleActive = true;
 
     void Start()
     {
-        // Aseguramos que solo uno estÈ activo
+        // Activamos solo uno al inicio
         maleCharacter.SetActive(true);
         femaleCharacter.SetActive(false);
 
-        // Configuramos la c·mara para ver el personaje actual
-        FocusOnCharacter(maleCharacter.transform);
+        // Solo nos aseguramos de que la c√°mara exista (no la tocamos)
+        if (characterPreviewCamera != null)
+            characterPreviewCamera.enabled = true;
     }
 
     public void OnSwitchCharacter()
     {
-        // Alternar personajes
+        // Determinar personajes activo/nuevo
+        GameObject activeCharacter = isMaleActive ? maleCharacter : femaleCharacter;
+        GameObject newCharacter = isMaleActive ? femaleCharacter : maleCharacter;
+
+        // Guardar posici√≥n y rotaci√≥n actuales
+        Vector3 currentPos = activeCharacter.transform.position;
+        Quaternion currentRot = activeCharacter.transform.rotation;
+
+        // Obtener controladores
+        CharacterController oldCC = activeCharacter.GetComponent<CharacterController>();
+        CharacterController newCC = newCharacter.GetComponent<CharacterController>();
+
+        if (oldCC != null) oldCC.enabled = false;
+        if (newCC != null) newCC.enabled = false;
+
+        // Cambiar visibilidad
+        activeCharacter.SetActive(false);
+        newCharacter.SetActive(true);
+
+        // Aplicar la misma posici√≥n y rotaci√≥n
+        newCharacter.transform.position = currentPos;
+        newCharacter.transform.rotation = currentRot;
+
+        if (newCC != null) newCC.enabled = true;
+
         isMaleActive = !isMaleActive;
 
-        maleCharacter.SetActive(isMaleActive);
-        femaleCharacter.SetActive(!isMaleActive);
+        // Actualizar c√°mara del juego (tercera persona)
+        StartCoroutine(ReassignGameCamera(newCharacter.transform));
 
-        // Actualizar la c·mara de vista previa
-        if (isMaleActive)
-            FocusOnCharacter(maleCharacter.transform);
-        else
-            FocusOnCharacter(femaleCharacter.transform);
-
-        Debug.Log("Personaje cambiado a: " + (isMaleActive ? "Hombre" : "Mujer"));
     }
 
-    void FocusOnCharacter(Transform character)
+    IEnumerator ReassignGameCamera(Transform newTarget)
     {
-        if (characterPreviewCamera == null) return;
+        yield return null;
 
-        // Ajusta la c·mara para que mire al personaje desde una distancia adecuada
-        characterPreviewCamera.transform.position = character.position + character.forward * -1.5f + Vector3.up * 1.5f;
-        characterPreviewCamera.transform.LookAt(character.position + Vector3.up * 1.5f);
+        Camera mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            CameraFollow follow = mainCam.GetComponent<CameraFollow>();
+            if (follow == null)
+            {
+                follow = mainCam.gameObject.AddComponent<CameraFollow>();
+                follow.offset = new Vector3(0f, cameraHeight, -cameraDistance);
+                follow.smoothSpeed = cameraFollowSpeed;
+                follow.rotationSpeed = cameraRotateSpeed;
+            }
+
+            follow.SetTarget(newTarget);
+        }
     }
 }

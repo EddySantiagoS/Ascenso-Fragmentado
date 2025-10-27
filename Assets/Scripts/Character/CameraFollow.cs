@@ -38,4 +38,8 @@ public class CameraFollow : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
         transform.LookAt(target.position + Vector3.up * 1.5f);
     }
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
 }
