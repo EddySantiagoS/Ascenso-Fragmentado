@@ -136,11 +136,22 @@ public class PlayerMovement : MonoBehaviour
 
             return; // evita que se ejecute el resto del movimiento
         }
-        
+
         if (!isClimbing)
         {
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
+        }
+
+        bool wasGrounded = isGrounded;
+        // Si está en el aire y cayendo (velocidad negativa)
+        if (!isGrounded && velocity.y < -1f && !isClimbing)
+        {
+            animator.SetBool("IsFalling", true);
+        }
+        else
+        {
+            animator.SetBool("IsFalling", false);
         }
     }
 
@@ -173,22 +184,35 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
         {
-            Debug.Log($"🧗‍♂️ Iniciando escalada en {hit.collider.name}");
-            isClimbing = true;
-            animator.speed = 0.5f;
-            animator.SetBool("IsClimbing", true);
-                animator.Play("Climbing", 0, 0f);
-            velocity = Vector3.zero;
+            if (!isClimbing) // 🔒 Solo ejecutar esto una vez
+            {
+                Debug.Log($"🧗‍♂️ Iniciando escalada en {hit.collider.name}");
+                isClimbing = true;
+                animator.speed = 1f;
+                animator.SetBool("IsClimbing", true);
+                animator.Play("Climbing", 0, 0f); // solo al iniciar
+                velocity = Vector3.zero;
+            }
         }
     }
 }
 
-void StopClimb()
-{
-    if (isClimbing)
+    void StopClimb()
     {
-        isClimbing = false;
-        animator.SetBool("IsClimbing", false);
+        Debug.Log("Stop climb llamado");
+        if (isClimbing)
+        {
+            isClimbing = false;
+            animator.SetBool("IsClimbing", false);
+
+            // 🔧 Restaurar la velocidad normal del animator
+            animator.speed = 1f;
+
+            // 👉 Activar caída si está en el aire
+            if (!controller.isGrounded)
+            {
+                animator.SetBool("IsFalling", true);
+            }
+        }
     }
-}
 }
