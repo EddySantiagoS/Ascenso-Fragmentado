@@ -1728,6 +1728,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
       insertIndex: -1
       addedObject: {fileID: 402665097}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 402665100}
   m_SourcePrefab: {fileID: 100100000, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
 --- !u!4 &402665095 stripped
 Transform:
@@ -1760,6 +1763,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39988706, y: 0.38789377, z: 1.0000002}
   m_Center: {x: 0.000007629394, y: 0.000052452102, z: -0.00000011920929}
+--- !u!114 &402665100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402665096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf4434c2f87e4541aa94032a4a8ba1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StreetLightController
+  lampLight: {fileID: 1348197606}
+  sunLight: {fileID: 119206833}
+  emissionObject: {fileID: 402665096}
 --- !u!1 &414165569
 GameObject:
   m_ObjectHideFlags: 0
@@ -5139,7 +5157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -882.09, y: -42.088}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1071884621
@@ -5545,7 +5563,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 8
   gravity: -9.81
-  jumpHeight: 5
+  jumpHeight: 3
   climbCheckDistance: 1
   climbSpeed: 2
   isClimbing: 0
@@ -5906,15 +5924,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VerticalLevelGenerator
   platformPrefabs:
   - {fileID: 1237645319385529666, guid: 3ff2a306e18705f4da0928315460cda2, type: 3}
+  - {fileID: 8386429128488096446, guid: 40baf6c13f1eab9488d0091ebee50629, type: 3}
+  - {fileID: 5834415858827242725, guid: bc9408a0b62ada649b6d2c2cf7efe205, type: 3}
   climbPrefabs:
-  - {fileID: 8556565393258369386, guid: 2edbb79e1d0021f459da565c7cbec0ae, type: 3}
-  - {fileID: 2772755074249059853, guid: 0e6bb272a17f35547946edf26d882ed9, type: 3}
+  - {fileID: 4661968859597163234, guid: 59c16793c34147f4fa3f9800f9efe3c2, type: 3}
   obstaclePrefabs:
   - {fileID: 8074158726741273216, guid: e17fe44d93799e043b85da26fb948169, type: 3}
-  initialSegments: 10
+  - {fileID: 6395484472562960333, guid: 20b7ab175de09384d89c6a58c35cc37b, type: 3}
+  initialSegments: 20
   minVerticalGap: 2
-  maxVerticalGap: 5
-  horizontalRange: 3
+  maxVerticalGap: 4
+  spiralRadius: 8
+  angleStep: 45
   startPoint: {fileID: 1543490506}
 --- !u!64 &1208402948
 MeshCollider:
@@ -6091,6 +6112,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1270387230}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1270387233}
   m_SourcePrefab: {fileID: 100100000, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
 --- !u!4 &1270387227 stripped
 Transform:
@@ -6118,6 +6142,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39988706, y: 0.38789377, z: 1.0000002}
   m_Center: {x: 0.000007629394, y: 0.000052452102, z: -0.00000011920929}
+--- !u!114 &1270387233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350696586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf4434c2f87e4541aa94032a4a8ba1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StreetLightController
+  lampLight: {fileID: 1752669370}
+  sunLight: {fileID: 119206833}
+  emissionObject: {fileID: 350696586}
 --- !u!1 &1272742886
 GameObject:
   m_ObjectHideFlags: 1
@@ -6430,7 +6469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1348197604
 Transform:
   m_ObjectHideFlags: 0
@@ -6999,117 +7038,6 @@ MonoBehaviour:
   controller: {fileID: 1178272053}
   index: 4
   image: {fileID: 1375125565}
---- !u!1 &1444059075
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1444059079}
-  - component: {fileID: 1444059078}
-  - component: {fileID: 1444059077}
-  - component: {fileID: 1444059076}
-  m_Layer: 6
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1444059076
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1444059075}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1444059077
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1444059075}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1444059078
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1444059075}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1444059079
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1444059075}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.66, y: 1.61, z: 1}
-  m_LocalScale: {x: 3.8703, y: 5.5904145, z: 4.8307}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1455580357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8302,7 +8230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1752669368
 Transform:
   m_ObjectHideFlags: 0
@@ -8467,7 +8395,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1752669367}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -9702,7 +9630,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 8
   gravity: -9.81
-  jumpHeight: 5
+  jumpHeight: 3
   climbCheckDistance: 1
   climbSpeed: 2
   isClimbing: 0
@@ -10639,4 +10567,3 @@ SceneRoots:
   - {fileID: 181519704}
   - {fileID: 495232141}
   - {fileID: 1178272052}
-  - {fileID: 1444059079}
