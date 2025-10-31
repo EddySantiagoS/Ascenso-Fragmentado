@@ -106,13 +106,13 @@ public class PlayerMovement : MonoBehaviour
             // Si deja de tocar el muro, termina la escalada
             if (!Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
             {
-                Debug.Log("🧱 Ya no hay muro al frente. Deteniendo escalada.");
+                Debug.Log(" Ya no hay muro al frente. Deteniendo escalada.");
 
                 // 💡 Si todavía no está en el suelo, lo subimos un poco
                 if (!controller.isGrounded)
                 {
                     controller.Move(Vector3.up * 1f); // lo sube para quedar sobre el borde
-                    Debug.Log("⬆️ Ajustando posición para quedar sobre el borde");
+                    Debug.Log(" Ajustando posición para quedar sobre el borde");
                 }
 
                 StopClimb();
@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("⏸️ Se soltó W o Ctrl. Deteniendo escalada.");
+                    Debug.Log(" Se soltó W o Ctrl. Deteniendo escalada.");
                     StopClimb();
                 }
             }
@@ -175,7 +175,8 @@ public class PlayerMovement : MonoBehaviour
     bool pressingForward = moveInput.y > 0.5f;
     bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
 
-    if (pressingForward && pressingCtrl && !isClimbing)
+    // Permitir escalada incluso si está en el aire
+    if (pressingForward && pressingCtrl)
     {
         RaycastHit hit;
         Vector3 origin = transform.position + Vector3.up * 1f;
@@ -184,15 +185,25 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
         {
-            if (!isClimbing) // 🔒 Solo ejecutar esto una vez
+            // Solo si toca una pared escalable
+            if (!isClimbing)
             {
                 Debug.Log($"🧗‍♂️ Iniciando escalada en {hit.collider.name}");
+
+                // Reiniciamos estados previos
                 isClimbing = true;
-                animator.speed = 1f;
-                animator.SetBool("IsClimbing", true);
-                animator.Play("Climbing", 0, 0f); // solo al iniciar
                 velocity = Vector3.zero;
+                animator.SetBool("IsFalling", false);
+                animator.ResetTrigger("Jump1");
+                animator.ResetTrigger("Jump2");
+                animator.SetBool("IsClimbing", true);
+                animator.Play("Climbing", 0, 0f);
             }
+        }
+        else
+        {
+            // En caso de no detectar muro, debug visual
+            Debug.Log("🚫 No hay muro escalable al frente.");
         }
     }
 }
