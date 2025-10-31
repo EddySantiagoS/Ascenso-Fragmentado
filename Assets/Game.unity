@@ -1193,7 +1193,7 @@ GameObject:
   - component: {fileID: 374779938}
   - component: {fileID: 374779937}
   - component: {fileID: 374779936}
-  - component: {fileID: 374779935}
+  - component: {fileID: 374779939}
   m_Layer: 5
   m_Name: BotonEmote4
   m_TagString: Untagged
@@ -1222,18 +1222,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &374779935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374779933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &374779936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,7 +1241,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1263,8 +1251,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -1316,6 +1304,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374779933}
   m_CullTransparentMesh: 1
+--- !u!114 &374779939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374779933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 3
+  image: {fileID: 374779937}
 --- !u!1001 &388088068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2348,7 +2351,7 @@ GameObject:
   - component: {fileID: 545068287}
   - component: {fileID: 545068286}
   - component: {fileID: 545068285}
-  - component: {fileID: 545068284}
+  - component: {fileID: 545068288}
   m_Layer: 5
   m_Name: BotonEmote6
   m_TagString: Untagged
@@ -2377,18 +2380,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &545068284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 545068282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &545068285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2408,7 +2399,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2418,8 +2409,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -2471,6 +2462,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545068282}
   m_CullTransparentMesh: 1
+--- !u!114 &545068288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545068282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 5
+  image: {fileID: 545068286}
 --- !u!1 &546759377
 GameObject:
   m_ObjectHideFlags: 0
@@ -3574,85 +3580,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c8befdd8abaeafe4f998bd148ef7aa4e, type: 3}
   m_PrefabInstance: {fileID: 685265090}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &687811524
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 687811525}
-  - component: {fileID: 687811527}
-  - component: {fileID: 687811526}
-  m_Layer: 5
-  m_Name: Text (Legacy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &687811525
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687811524}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1178272052}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 810.696, y: 152.0055}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &687811526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687811524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 44
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 115
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: BBBBBBBBBBBBBBBBBBBBBBBBBBBBB
---- !u!222 &687811527
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687811524}
-  m_CullTransparentMesh: 1
 --- !u!1 &691073681
 GameObject:
   m_ObjectHideFlags: 0
@@ -4090,7 +4017,7 @@ GameObject:
   - component: {fileID: 788559612}
   - component: {fileID: 788559611}
   - component: {fileID: 788559610}
-  - component: {fileID: 788559609}
+  - component: {fileID: 788559613}
   m_Layer: 5
   m_Name: BotonEmote7
   m_TagString: Untagged
@@ -4119,18 +4046,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &788559609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 788559607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &788559610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4150,7 +4065,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4160,8 +4075,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -4213,6 +4128,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788559607}
   m_CullTransparentMesh: 1
+--- !u!114 &788559613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788559607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 6
+  image: {fileID: 788559611}
 --- !u!1 &799068809
 GameObject:
   m_ObjectHideFlags: 0
@@ -4963,7 +4893,7 @@ GameObject:
   - component: {fileID: 1025426925}
   - component: {fileID: 1025426924}
   - component: {fileID: 1025426923}
-  - component: {fileID: 1025426922}
+  - component: {fileID: 1025426926}
   m_Layer: 5
   m_Name: BotonEmote2
   m_TagString: Untagged
@@ -4992,18 +4922,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1025426922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025426920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &1025426923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5023,7 +4941,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -5033,8 +4951,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -5086,6 +5004,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025426920}
   m_CullTransparentMesh: 1
+--- !u!114 &1025426926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025426920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 1
+  image: {fileID: 1025426924}
 --- !u!4 &1027495782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -131761456609737084, guid: 5a6515c9c8e440044ac06053215deaf6, type: 3}
@@ -5174,6 +5107,7 @@ GameObject:
   - component: {fileID: 1071884620}
   - component: {fileID: 1071884622}
   - component: {fileID: 1071884621}
+  - component: {fileID: 1071884623}
   m_Layer: 5
   m_Name: PanelEmote
   m_TagString: Untagged
@@ -5222,7 +5156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.5974749, g: 0, b: 0.735849, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5246,6 +5180,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071884619}
   m_CullTransparentMesh: 1
+--- !u!225 &1071884623
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071884619}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1076291763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5763,12 +5709,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5784,7 +5730,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1584726429}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5810,7 +5756,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1071884620}
-  - {fileID: 687811525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5831,8 +5776,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmoteMenuController
   panelEmote: {fileID: 1071884619}
-  normalSprite: {fileID: 21300000, guid: ff062add629719d4887a262f00731d5d, type: 3}
-  hoverSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
   botonesEmote:
   - {fileID: 2122567994}
   - {fileID: 1025426923}
@@ -5842,7 +5785,6 @@ MonoBehaviour:
   - {fileID: 545068285}
   - {fileID: 788559610}
   - {fileID: 1951411293}
-  debugText: {fileID: 687811526}
 --- !u!1 &1191292401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 78af7a3aeee39914988ed2f404f50908, type: 3}
@@ -6931,7 +6873,7 @@ GameObject:
   - component: {fileID: 1375125566}
   - component: {fileID: 1375125565}
   - component: {fileID: 1375125564}
-  - component: {fileID: 1375125563}
+  - component: {fileID: 1375125567}
   m_Layer: 5
   m_Name: BotonEmote5
   m_TagString: Untagged
@@ -6960,18 +6902,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1375125563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375125561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &1375125564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6991,7 +6921,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -7001,8 +6931,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -7054,6 +6984,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375125561}
   m_CullTransparentMesh: 1
+--- !u!114 &1375125567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375125561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 4
+  image: {fileID: 1375125565}
 --- !u!1 &1444059075
 GameObject:
   m_ObjectHideFlags: 0
@@ -9913,7 +9858,7 @@ GameObject:
   - component: {fileID: 1942270095}
   - component: {fileID: 1942270094}
   - component: {fileID: 1942270093}
-  - component: {fileID: 1942270092}
+  - component: {fileID: 1942270096}
   m_Layer: 5
   m_Name: BotonEmote3
   m_TagString: Untagged
@@ -9942,18 +9887,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1942270092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942270090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &1942270093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9973,7 +9906,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -9983,8 +9916,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -10036,6 +9969,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942270090}
   m_CullTransparentMesh: 1
+--- !u!114 &1942270096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942270090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 2
+  image: {fileID: 1942270094}
 --- !u!1 &1943821306
 GameObject:
   m_ObjectHideFlags: 0
@@ -10124,7 +10072,7 @@ GameObject:
   - component: {fileID: 1951411295}
   - component: {fileID: 1951411294}
   - component: {fileID: 1951411293}
-  - component: {fileID: 1951411292}
+  - component: {fileID: 1951411296}
   m_Layer: 5
   m_Name: BotonEmote8
   m_TagString: Untagged
@@ -10153,18 +10101,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1951411292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1951411290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &1951411293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10184,7 +10120,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -10194,8 +10130,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -10247,6 +10183,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951411290}
   m_CullTransparentMesh: 1
+--- !u!114 &1951411296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951411290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 7
+  image: {fileID: 1951411294}
 --- !u!1 &1980488815
 GameObject:
   m_ObjectHideFlags: 0
@@ -10547,7 +10498,7 @@ GameObject:
   - component: {fileID: 2122567996}
   - component: {fileID: 2122567995}
   - component: {fileID: 2122567994}
-  - component: {fileID: 2122567993}
+  - component: {fileID: 2122567997}
   m_Layer: 5
   m_Name: BotonEmote1
   m_TagString: Untagged
@@ -10576,18 +10527,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 1037.9126, y: 1037.9126}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2122567993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2122567991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34adcd1a0592404438372cb140dd1d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
 --- !u!114 &2122567994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10607,7 +10546,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -10617,8 +10556,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: e0a0d8761c6ab4543880ca61e993f889, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -10670,6 +10609,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122567991}
   m_CullTransparentMesh: 1
+--- !u!114 &2122567997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122567991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b208ee7ad8512224e839810a487a4731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteButton
+  controller: {fileID: 1178272053}
+  index: 0
+  image: {fileID: 2122567995}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
