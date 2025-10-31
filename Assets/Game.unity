@@ -7277,7 +7277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetManager
   petPrefabs:
-  - {fileID: 4328303815057540166, guid: 10551f8cd7fd7c14884e3f8d5ce22b2b, type: 3}
+  - {fileID: 4673069544511903179, guid: 418ea41c1f7cbe64e805909dc606c35e, type: 3}
 --- !u!1 &1476519587
 GameObject:
   m_ObjectHideFlags: 0
