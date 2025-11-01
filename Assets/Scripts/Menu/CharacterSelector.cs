@@ -22,10 +22,16 @@ public class CharacterSelector : MonoBehaviour
     {
         mainCam = Camera.main;
 
-        // Aseguramos que ambos personajes est�n visibles
-        maleCharacter.SetActive(true);
-        femaleCharacter.SetActive(true);
+        // Aseguramos que ambos personajes estén visibles
+        if (maleCharacter != null) maleCharacter.SetActive(true);
+        if (femaleCharacter != null) femaleCharacter.SetActive(true);
+
+        // IMPORTANT: Quitamos cualquier tag "Player" inicial para asegurarnos
+        // de que el sistema de emotes NO se pueda abrir hasta elegir personaje.
+        if (maleCharacter != null) maleCharacter.tag = "Untagged";
+        if (femaleCharacter != null) femaleCharacter.tag = "Untagged";
     }
+
     void Update()
     {
         if (transitioning) return;
@@ -33,15 +39,15 @@ public class CharacterSelector : MonoBehaviour
         // Usamos el nuevo Input System:
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Obtener posici�n actual del mouse
+            // Obtener posición actual del mouse
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Ray ray = mainCam.ScreenPointToRay(mousePos);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.transform.IsChildOf(maleCharacter.transform))
+                if (maleCharacter != null && hit.transform.IsChildOf(maleCharacter.transform))
                     SelectCharacter("Male");
-                else if (hit.transform.IsChildOf(femaleCharacter.transform))
+                else if (femaleCharacter != null && hit.transform.IsChildOf(femaleCharacter.transform))
                     SelectCharacter("Female");
             }
         }
@@ -53,19 +59,41 @@ public class CharacterSelector : MonoBehaviour
         Debug.Log("Personaje seleccionado: " + character);
 
         // Resaltar personaje seleccionado
-        maleCharacter.transform.localScale = (character == "Male") ? Vector3.one * 1.1f : Vector3.one;
-        femaleCharacter.transform.localScale = (character == "Female") ? Vector3.one * 1.1f : Vector3.one;
+        if (maleCharacter != null) maleCharacter.transform.localScale = (character == "Male") ? Vector3.one * 1.1f : Vector3.one;
+        if (femaleCharacter != null) femaleCharacter.transform.localScale = (character == "Female") ? Vector3.one * 1.1f : Vector3.one;
 
         // Desactivar el otro personaje
         if (character == "Male")
-            femaleCharacter.SetActive(false);
+        {
+            if (femaleCharacter != null) femaleCharacter.SetActive(false);
+        }
         else
-            maleCharacter.SetActive(false);
+        {
+            if (maleCharacter != null) maleCharacter.SetActive(false);
+        }
 
         // Obtener el personaje activo
         GameObject activePlayer = (character == "Male") ? maleCharacter : femaleCharacter;
+        if (activePlayer == null)
+        {
+            Debug.LogWarning("SelectCharacter: activePlayer es null.");
+            return;
+        }
 
-        // Asignarlo al BookInteraction
+        // ASIGNAR TAG "Player" AL PERSONAJE ELEGIDO
+        activePlayer.tag = "Player";
+
+        // QUITAR TAG AL OTRO POR SEGURIDAD
+        if (character == "Male")
+        {
+            if (femaleCharacter != null) femaleCharacter.tag = "Untagged";
+        }
+        else
+        {
+            if (maleCharacter != null) maleCharacter.tag = "Untagged";
+        }
+
+        // Asignarlo al BookInteraction (si existe)
         BookInteraction book = FindFirstObjectByType<BookInteraction>();
         if (book != null)
             book.SetPlayer(activePlayer.transform);
@@ -76,10 +104,16 @@ public class CharacterSelector : MonoBehaviour
         // Iniciar movimiento de cámara
         StartCoroutine(MoveCameraBehindCharacter());
     }
+
     IEnumerator MoveCameraBehindCharacter()
     {
         transitioning = true;
         GameObject targetChar = selectedCharacter == "Male" ? maleCharacter : femaleCharacter;
+        if (targetChar == null)
+        {
+            transitioning = false;
+            yield break;
+        }
 
         while (true)
         {
@@ -102,7 +136,11 @@ public class CharacterSelector : MonoBehaviour
 
         transitioning = false;
 
+        // Evitar añadir múltiples CameraFollow si ya existe uno
+        var existing = mainCam.gameObject.GetComponent<CameraFollow>();
+        if (existing != null) Destroy(existing);
+
         var follow = mainCam.gameObject.AddComponent<CameraFollow>();
-        follow.target = targetChar.transform;
+        follow.SetTarget(targetChar.transform);
     }
 }
