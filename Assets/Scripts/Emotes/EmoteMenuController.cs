@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections;
+using TMPro;
 
 public class EmoteMenuController : MonoBehaviour
 {
@@ -22,12 +23,12 @@ public class EmoteMenuController : MonoBehaviour
     private PlayerControls controls;
     private bool isHoldingKey = false;
     private Sprite[] originalSprites;
-
     private bool emotePlaying = false;
-
     private float lastScrollTime = 0f;
-
     private Animator playerAnimator;
+
+    // --- NUEVO ---
+    public TMP_Text[] textosEmote; // Guardará las referencias a los textos de cada botón
 
     void Awake()
     {
@@ -54,6 +55,7 @@ public class EmoteMenuController : MonoBehaviour
         }
 
         originalSprites = new Sprite[botonesEmote.Length];
+        textosEmote = new TMP_Text[botonesEmote.Length]; // inicializamos el array
 
         for (int i = 0; i < botonesEmote.Length; i++)
         {
@@ -63,6 +65,15 @@ public class EmoteMenuController : MonoBehaviour
             int idx = i;
             botonesEmote[i].onClick.RemoveAllListeners();
             botonesEmote[i].onClick.AddListener(() => ExecuteEmote(idx));
+
+            // --- NUEVO ---
+            // Buscamos el TMP_Text (o TextMeshProUGUI) dentro del botón
+            TMP_Text txt = botonesEmote[i].GetComponentInChildren<TMP_Text>(true);
+            if (txt != null)
+            {
+                textosEmote[i] = txt;
+                txt.gameObject.SetActive(false); // desactivamos todos al inicio
+            }
         }
 
         UpdateButtonVisuals();
@@ -70,7 +81,6 @@ public class EmoteMenuController : MonoBehaviour
 
     private void OnEmoteKeyPressed()
     {
-        // NO abrir el menú si NO hay un personaje seleccionado (no hay Player en escena activo)
         GameObject playerCheck = GameObject.FindWithTag("Player");
         if (playerCheck == null)
         {
@@ -78,7 +88,6 @@ public class EmoteMenuController : MonoBehaviour
             return;
         }
 
-        // adicional: asegurarnos que el objeto con tag Player esté activo en jerarquía
         if (!playerCheck.activeInHierarchy)
         {
             Debug.Log("Menú de emotes bloqueado: el objeto con tag 'Player' no está activo.");
@@ -110,7 +119,6 @@ public class EmoteMenuController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        // no ejecutar emote si todavía no hay personaje
         GameObject playerCheck = GameObject.FindWithTag("Player");
         if (playerCheck == null || !playerCheck.activeInHierarchy)
         {
@@ -163,10 +171,18 @@ public class EmoteMenuController : MonoBehaviour
                     img.sprite = pressed;
                 else
                     img.sprite = originalSprites[i];
+
+                // --- NUEVO ---
+                if (textosEmote != null && textosEmote[i] != null)
+                    textosEmote[i].gameObject.SetActive(true);
             }
             else
             {
                 img.sprite = originalSprites[i];
+
+                // --- NUEVO ---
+                if (textosEmote != null && textosEmote[i] != null)
+                    textosEmote[i].gameObject.SetActive(false);
             }
         }
     }
@@ -196,10 +212,7 @@ public class EmoteMenuController : MonoBehaviour
 
         Debug.Log($"Ejecutando emote #{index + 1}");
 
-        // cancelar emote anterior (la transición Emote_X -> EmoteIdle depende del bool IsEmoting)
         playerAnimator.SetBool("IsEmoting", false);
-
-        // iniciar nuevo emote
         emotePlaying = true;
         playerAnimator.SetBool("IsEmoting", true);
 
