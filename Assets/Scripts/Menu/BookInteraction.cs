@@ -1,14 +1,14 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class BookInteraction : MonoBehaviour
 {
-    [Header("UI Holográfica (Canvas en World Space)")]
+    [Header("UI HologrÃ¡fica (Canvas en World Space)")]
     public GameObject hologramUI;
 
-    [Header("Configuración")]
+    [Header("ConfiguraciÃ³n")]
     public float activationDistance = 2.5f;
     public string playerTag = "Player";
 
@@ -18,7 +18,7 @@ public class BookInteraction : MonoBehaviour
     private bool inBookView = false;
     private Vector3 originalScale;
 
-    // Guardamos la configuración original del Canvas
+    // Guardamos la configuraciÃ³n original del Canvas
     private Canvas canvas;
     private RenderMode originalRenderMode;
     private Camera originalCamera;
@@ -34,7 +34,7 @@ public class BookInteraction : MonoBehaviour
             canvas = hologramUI.GetComponentInParent<Canvas>();
             if (canvas == null)
             {
-                Debug.LogError("No se encontró un Canvas en el padre del hologramUI. Asegúrate de que el UI esté dentro de un Canvas.");
+                Debug.LogError("No se encontrÃ³ un Canvas en el padre del hologramUI. AsegÃºrate de que el UI estÃ© dentro de un Canvas.");
                 return;
             }
 
@@ -71,13 +71,13 @@ public class BookInteraction : MonoBehaviour
 
         if (Keyboard.current == null) return;
 
-        // Abrir menú (E)
+        // Abrir menÃº (E)
         if (isVisible && !inBookView && Keyboard.current.eKey.wasPressedThisFrame)
         {
             ActivateBookView();
         }
 
-        // Cerrar menú (Escape)
+        // Cerrar menÃº (Escape)
         if (inBookView && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             DeactivateBookView();
@@ -136,27 +136,27 @@ public class BookInteraction : MonoBehaviour
         hologramUI.SetActive(false);
     }
 
-    // --- Transición a modo de menú (Overlay) ---
+    // --- TransiciÃ³n a modo de menÃº (Overlay) ---
 
     void ActivateBookView()
     {
         if (canvas == null) return;
 
-        // Guardamos la transformación actual del canvas en el mundo
+        // Guardamos la transformaciÃ³n actual del canvas en el mundo
         savedPosition = canvas.transform.position;
         savedRotation = canvas.transform.rotation;
         savedScale = canvas.transform.localScale;
 
         inBookView = true;
 
-        // Aseguramos que la escala no esté invertida antes del Overlay
+        // Aseguramos que la escala no estÃ© invertida antes del Overlay
         Vector3 fixedScale = canvas.transform.localScale;
         fixedScale.x = Mathf.Abs(fixedScale.x);
         fixedScale.y = Mathf.Abs(fixedScale.y);
         fixedScale.z = Mathf.Abs(fixedScale.z);
         canvas.transform.localScale = fixedScale;
 
-        // Reiniciamos la rotación para evitar reflejos en pantalla
+        // Reiniciamos la rotaciÃ³n para evitar reflejos en pantalla
         canvas.transform.rotation = Quaternion.identity;
 
         // Cambiar a Overlay
@@ -170,7 +170,7 @@ public class BookInteraction : MonoBehaviour
         if (playerMovement != null)
             playerMovement.enabled = false;
 
-        Debug.Log("Vista del libro activada (modo Overlay, rotación previa aplicada).");
+        Debug.Log("Vista del libro activada (modo Overlay, rotaciÃ³n previa aplicada).");
     }
 
     void DeactivateBookView()
@@ -183,7 +183,7 @@ public class BookInteraction : MonoBehaviour
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.worldCamera = originalCamera;
 
-        // Restaurar posición, rotación y escala exactas
+        // Restaurar posiciÃ³n, rotaciÃ³n y escala exactas
         canvas.transform.position = savedPosition;
         canvas.transform.rotation = savedRotation;
         canvas.transform.localScale = savedScale;
@@ -195,6 +195,6 @@ public class BookInteraction : MonoBehaviour
         if (playerMovement != null)
             playerMovement.enabled = true;
 
-        Debug.Log("Vista del libro cerrada (volvió al mundo con su posición original).");
+        Debug.Log("Vista del libro cerrada (volviÃ³ al mundo con su posiciÃ³n original).");
     }
 }

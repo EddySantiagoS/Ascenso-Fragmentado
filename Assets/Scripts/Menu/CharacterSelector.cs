@@ -17,17 +17,19 @@ public class CharacterSelector : MonoBehaviour
     private string selectedCharacter = "None";
     private bool transitioning = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mainCam = Camera.main;
 
-        // Aseguramos que ambos personajes estén visibles
+        // Ambos personajes visibles
         if (maleCharacter != null) maleCharacter.SetActive(true);
         if (femaleCharacter != null) femaleCharacter.SetActive(true);
 
-        // IMPORTANT: Quitamos cualquier tag "Player" inicial para asegurarnos
-        // de que el sistema de emotes NO se pueda abrir hasta elegir personaje.
+        // Quitar control de movimiento al inicio
+        DisablePlayerMovement(maleCharacter);
+        DisablePlayerMovement(femaleCharacter);
+
+        // Quitar tag de "Player"
         if (maleCharacter != null) maleCharacter.tag = "Untagged";
         if (femaleCharacter != null) femaleCharacter.tag = "Untagged";
     }
@@ -36,10 +38,9 @@ public class CharacterSelector : MonoBehaviour
     {
         if (transitioning) return;
 
-        // Usamos el nuevo Input System:
+        // Detección de clic con el nuevo Input System
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Obtener posición actual del mouse
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Ray ray = mainCam.ScreenPointToRay(mousePos);
 
@@ -58,11 +59,11 @@ public class CharacterSelector : MonoBehaviour
         selectedCharacter = character;
         Debug.Log("Personaje seleccionado: " + character);
 
-        // Resaltar personaje seleccionado
+        // Resaltar el personaje elegido
         if (maleCharacter != null) maleCharacter.transform.localScale = (character == "Male") ? Vector3.one * 1.1f : Vector3.one;
         if (femaleCharacter != null) femaleCharacter.transform.localScale = (character == "Female") ? Vector3.one * 1.1f : Vector3.one;
 
-        // Desactivar el otro personaje
+        // Desactivar el personaje no elegido
         if (character == "Male")
         {
             if (femaleCharacter != null) femaleCharacter.SetActive(false);
@@ -72,7 +73,7 @@ public class CharacterSelector : MonoBehaviour
             if (maleCharacter != null) maleCharacter.SetActive(false);
         }
 
-        // Obtener el personaje activo
+        // Activar el personaje seleccionado
         GameObject activePlayer = (character == "Male") ? maleCharacter : femaleCharacter;
         if (activePlayer == null)
         {
@@ -80,10 +81,10 @@ public class CharacterSelector : MonoBehaviour
             return;
         }
 
-        // ASIGNAR TAG "Player" AL PERSONAJE ELEGIDO
+        // Asignar tag "Player" al personaje elegido
         activePlayer.tag = "Player";
 
-        // QUITAR TAG AL OTRO POR SEGURIDAD
+        // Desactivar tag del otro
         if (character == "Male")
         {
             if (femaleCharacter != null) femaleCharacter.tag = "Untagged";
@@ -93,7 +94,10 @@ public class CharacterSelector : MonoBehaviour
             if (maleCharacter != null) maleCharacter.tag = "Untagged";
         }
 
-        // Asignarlo al BookInteraction (si existe)
+        // 🔥 Habilitar movimiento SOLO del personaje elegido
+        EnablePlayerMovement(activePlayer);
+
+        // Asignar el jugador al sistema externo (BookInteraction)
         BookInteraction book = FindFirstObjectByType<BookInteraction>();
         if (book != null)
             book.SetPlayer(activePlayer.transform);
@@ -101,7 +105,7 @@ public class CharacterSelector : MonoBehaviour
         // Desactivar este script para evitar más clics
         this.enabled = false;
 
-        // Iniciar movimiento de cámara
+        // Iniciar la transición de cámara
         StartCoroutine(MoveCameraBehindCharacter());
     }
 
@@ -142,5 +146,32 @@ public class CharacterSelector : MonoBehaviour
 
         var follow = mainCam.gameObject.AddComponent<CameraFollow>();
         follow.SetTarget(targetChar.transform);
+    }
+
+    // ------------------------------
+    // 🔒 CONTROL DE MOVIMIENTO
+    // ------------------------------
+
+    void DisablePlayerMovement(GameObject character)
+    {
+        if (character == null) return;
+
+        var move = character.GetComponent<PlayerMovement>();
+        if (move != null)
+        {
+            move.enabled = true; // El script sigue activo para mantener animaciones
+            move.AllowMovement = false; // Pero bloqueamos el input
+        }
+    }
+
+    void EnablePlayerMovement(GameObject character)
+    {
+        if (character == null) return;
+
+        var move = character.GetComponent<PlayerMovement>();
+        if (move != null)
+        {
+            move.AllowMovement = true;
+        }
     }
 }
