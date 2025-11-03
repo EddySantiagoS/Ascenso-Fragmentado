@@ -34,36 +34,42 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     public void OnSwitchCharacter()
     {
-        // Determinar personajes activo/nuevo
         GameObject activeCharacter = isMaleActive ? maleCharacter : femaleCharacter;
         GameObject newCharacter = isMaleActive ? femaleCharacter : maleCharacter;
 
-        // Guardar posición y rotación actuales
         Vector3 currentPos = activeCharacter.transform.position;
         Quaternion currentRot = activeCharacter.transform.rotation;
 
-        // Obtener controladores
         CharacterController oldCC = activeCharacter.GetComponent<CharacterController>();
         CharacterController newCC = newCharacter.GetComponent<CharacterController>();
 
         if (oldCC != null) oldCC.enabled = false;
         if (newCC != null) newCC.enabled = false;
 
-        // Cambiar visibilidad
         activeCharacter.SetActive(false);
         newCharacter.SetActive(true);
 
-        // Aplicar la misma posición y rotación
         newCharacter.transform.position = currentPos;
         newCharacter.transform.rotation = currentRot;
 
         if (newCC != null) newCC.enabled = true;
 
+        // 🔥 NUEVO: Actualizar el tag del jugador
+        activeCharacter.tag = "Untagged";
+        newCharacter.tag = "Player";
+
+        // 🔥 NUEVO: Activar/desactivar movimiento correctamente
+        var oldMove = activeCharacter.GetComponent<PlayerMovement>();
+        if (oldMove != null)
+            oldMove.AllowMovement = false;
+
+        var newMove = newCharacter.GetComponent<PlayerMovement>();
+        if (newMove != null)
+            newMove.AllowMovement = true;
+
         isMaleActive = !isMaleActive;
 
-        // Actualizar cámara del juego (tercera persona)
         StartCoroutine(ReassignGameCamera(newCharacter.transform));
-
     }
 
     IEnumerator ReassignGameCamera(Transform newTarget)

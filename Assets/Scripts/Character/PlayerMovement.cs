@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -30,6 +31,17 @@ public class PlayerMovement : MonoBehaviour
     private float climbReleaseTimer = 0f;
     public float climbReleaseDelay = 0.3f;
 
+    [Header("Stamina")]
+    public float maxStamina = 100f;
+    public float stamina;
+    public float staminaDrainRun = 10f;   // por segundo
+    public float staminaDrainJump = 20f;  // por salto
+    public float staminaDrainClimb = 15f; // por segundo
+    public float staminaRegenRate = 8f;   // por segundo
+    public bool canUseStamina = true;
+    public Slider staminaBar;
+      public GameObject staminaUI;
+
     void Awake()
     {
         controls = new PlayerControls();
@@ -53,6 +65,10 @@ public class PlayerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        stamina = maxStamina;
+
+        if (staminaUI != null)
+        staminaUI.SetActive(false);
     }
 
     void Update()
@@ -90,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Movimiento físico
-        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+        float currentSpeed = (isRunning && canUseStamina) ? runSpeed : walkSpeed;
         controller.Move(move.normalized * currentSpeed * Time.deltaTime);
 
         // Animaciones
@@ -117,6 +133,13 @@ public class PlayerMovement : MonoBehaviour
                 bool pressingForward = moveInput.y > 0.5f;
                 bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
 
+                // 🚫 Si no tiene stamina, se cae automáticamente
+                if (!canUseStamina)
+                {
+                    StopClimb();
+                    return;
+                }
+
                 if (pressingForward && pressingCtrl)
                 {
                     controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
@@ -127,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+            HandleStamina();
             return;
         }
 
@@ -144,14 +168,18 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("IsFalling", false);
         }
+
+        HandleStamina();
     }
 
     void Jump()
     {
-        if (!AllowMovement) return; // ❌ Bloqueamos salto si no se ha seleccionado personaje
+        if (!AllowMovement || !canUseStamina) return; // ❌ Bloqueamos salto si no se ha seleccionado personaje
+        
 
         if (isGrounded)
         {
+            stamina -= staminaDrainJump;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             int jumpType = Random.Range(0, 2);
             if (jumpType == 0)
@@ -163,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
 
     void TryClimb()
     {
-        if (!AllowMovement) return; // ❌ Bloquea escalada sin selección
+        if (!AllowMovement || !canUseStamina) return; // ❌ Bloquea escalada sin selección 
 
         bool pressingForward = moveInput.y > 0.5f;
         bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
@@ -202,5 +230,30 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("IsFalling", true);
             }
         }
+    }
+
+    void HandleStamina()
+    {
+        // Si está corriendo
+        if (isRunning && moveInput.magnitude > 0.1f)
+            stamina -= staminaDrainRun * Time.deltaTime;
+
+        // Si está escalando
+        if (isClimbing)
+            stamina -= staminaDrainClimb * Time.deltaTime;
+
+        // Si no está haciendo nada exigente, regenera
+        if (!isRunning && !isClimbing && controller.isGrounded && moveInput.magnitude < 0.1f)
+            stamina += staminaRegenRate * Time.deltaTime;
+
+        // Limitar valores
+        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+
+        // Control de uso
+        canUseStamina = stamina > 0;
+
+        if (staminaBar != null)
+            staminaBar.value = stamina / maxStamina;
+
     }
 }

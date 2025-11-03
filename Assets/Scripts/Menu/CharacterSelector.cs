@@ -8,6 +8,7 @@ public class CharacterSelector : MonoBehaviour
     public GameObject maleCharacter;
     public GameObject femaleCharacter;
 
+
     [Header("Camera")]
     public float cameraDistance = 3f;
     public float cameraHeight = 1.7f;
@@ -16,6 +17,7 @@ public class CharacterSelector : MonoBehaviour
     private Camera mainCam;
     private string selectedCharacter = "None";
     private bool transitioning = false;
+
 
     void Start()
     {
@@ -172,6 +174,9 @@ public class CharacterSelector : MonoBehaviour
         if (move != null)
         {
             move.AllowMovement = true;
+
+            if (move.staminaUI != null)
+            move.staminaUI.SetActive(true);
         }
     }
 }
