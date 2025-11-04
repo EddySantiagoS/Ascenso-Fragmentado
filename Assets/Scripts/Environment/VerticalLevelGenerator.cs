@@ -35,6 +35,11 @@ public class VerticalLevelGenerator : MonoBehaviour
             currentHeight = startPoint.position.y;
 
         nextMenuIslandAt = segmentsPerMenuIsland; 
+    }
+
+    public void StartGeneration()
+    {
+        Debug.Log("Generando mapa vertical...");
         GenerateInitialMap();
     }
 
@@ -168,5 +173,29 @@ public class VerticalLevelGenerator : MonoBehaviour
 
         Debug.Log($"Isla del menú generada en {spawnPos}");
         awaitingPlayer = true;
+    }
+
+    public void ClearGeneratedBlocks()
+    {
+        Debug.Log("Eliminando bloques generados...");
+
+        foreach (GameObject seg in spawnedSegments)
+        {
+            if (seg != null)
+                Destroy(seg);
+        }
+
+        spawnedSegments.Clear();
+
+        totalSegmentsGenerated = 0;
+        currentAngle = 0f;
+        awaitingPlayer = false;
+
+        if (startPoint != null)
+            currentHeight = startPoint.position.y;
+
+        nextMenuIslandAt = segmentsPerMenuIsland;
+
+        Debug.Log("Bloques eliminados correctamente.");
     }
 }
