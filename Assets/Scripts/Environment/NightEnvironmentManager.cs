@@ -31,6 +31,15 @@ public class NightEnvironmentManager : MonoBehaviour
     {
         if (autoDetectObjects)
             FindNightObjects();
+
+        if (sunLight != null)
+        {
+            float rotX = sunLight.transform.rotation.eulerAngles.x;
+            isNight = rotX > nightStartAngle && rotX < nightEndAngle;
+
+            // Aplicar ese estado inicial a todos los objetos
+            UpdateNightObjects();
+        }
     }
 
     void Update()
