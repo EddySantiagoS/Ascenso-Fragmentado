@@ -23,9 +23,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     void Start()
     {
-        // Activamos solo uno al inicio
-        maleCharacter.SetActive(true);
-        femaleCharacter.SetActive(false);
+        // Detectar qué personaje está activo al inicio
+        isMaleActive = maleCharacter.activeSelf && !femaleCharacter.activeSelf;
 
         // Solo nos aseguramos de que la cámara exista (no la tocamos)
         if (characterPreviewCamera != null)
@@ -34,41 +33,71 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     public void OnSwitchCharacter()
     {
-        GameObject activeCharacter = isMaleActive ? maleCharacter : femaleCharacter;
-        GameObject newCharacter = isMaleActive ? femaleCharacter : maleCharacter;
+        // 1) Determinar quién es el jugador actual de forma fiable (por tag)
+        GameObject activeCharacter = GameObject.FindWithTag("Player");
+        GameObject newCharacter = null;
 
+        if (activeCharacter == null)
+        {
+            // fallback: usar isMaleActive por compatibilidad
+            activeCharacter = isMaleActive ? maleCharacter : femaleCharacter;
+            newCharacter = isMaleActive ? femaleCharacter : maleCharacter;
+        }
+        else
+        {
+            // elegir el otro
+            newCharacter = (activeCharacter == maleCharacter) ? femaleCharacter : maleCharacter;
+        }
+
+        if (activeCharacter == null || newCharacter == null)
+        {
+            Debug.LogWarning("[CharacterSwitcher] No se pudo determinar active/new character.");
+            return;
+        }
+
+        Debug.Log($"[CharacterSwitcher] Switch requested. Active: {activeCharacter.name} -> New: {newCharacter.name}");
+
+        // 2) Guardar posición y rotación del actual
         Vector3 currentPos = activeCharacter.transform.position;
         Quaternion currentRot = activeCharacter.transform.rotation;
 
+        // 3) Desactivar CharacterControllers ANTES de desactivar GameObject
         CharacterController oldCC = activeCharacter.GetComponent<CharacterController>();
         CharacterController newCC = newCharacter.GetComponent<CharacterController>();
 
         if (oldCC != null) oldCC.enabled = false;
         if (newCC != null) newCC.enabled = false;
 
+        // 4) Desactivar el actual (ya sin CC)
         activeCharacter.SetActive(false);
+
+        // 5) Posicionar y rotar el nuevo ANTES de activarlo
+        newCharacter.transform.SetPositionAndRotation(currentPos, currentRot);
+
+        // 6) Activar el nuevo
         newCharacter.SetActive(true);
 
-        newCharacter.transform.position = currentPos;
-        newCharacter.transform.rotation = currentRot;
+        // 7) Esperar un frame y luego habilitar su CharacterController (corrutina)
+        StartCoroutine(EnableCharacterControllerNextFrame(newCC));
 
-        if (newCC != null) newCC.enabled = true;
-
-        // 🔥 NUEVO: Actualizar el tag del jugador
+        // 8) Actualizar tags y movimiento
         activeCharacter.tag = "Untagged";
         newCharacter.tag = "Player";
 
-        // 🔥 NUEVO: Activar/desactivar movimiento correctamente
         var oldMove = activeCharacter.GetComponent<PlayerMovement>();
-        if (oldMove != null)
-            oldMove.AllowMovement = false;
+        if (oldMove != null) oldMove.AllowMovement = false;
 
         var newMove = newCharacter.GetComponent<PlayerMovement>();
-        if (newMove != null)
-            newMove.AllowMovement = true;
+        if (newMove != null) newMove.AllowMovement = true;
 
-        isMaleActive = !isMaleActive;
+        // 9) Actualizar el flag isMaleActive según el nuevo personaje
+        isMaleActive = (newCharacter == maleCharacter);
 
+        // 10) Notificar BookInteraction para que use el nuevo jugador
+        foreach (BookInteraction book in FindObjectsByType<BookInteraction>(FindObjectsSortMode.None))
+            book.SetPlayer(newCharacter.transform);
+
+        // 11) Reasignar cámara (lo haces en corrutina para esperar frame)
         StartCoroutine(ReassignGameCamera(newCharacter.transform));
     }
 
@@ -90,5 +119,21 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
             follow.SetTarget(newTarget);
         }
+    }
+
+    IEnumerator EnableCharacterControllerNextFrame(CharacterController cc)
+    {
+        yield return null;
+        if (cc != null)
+            cc.enabled = true;
+    }
+
+    IEnumerator ActivateNextCharacter(GameObject newCharacter, Vector3 pos, Quaternion rot)
+    {
+        yield return null; // Espera un frame para asegurar que el desactivado se procese
+
+        newCharacter.SetActive(true);
+        newCharacter.transform.position = pos;
+        newCharacter.transform.rotation = rot;
     }
 }

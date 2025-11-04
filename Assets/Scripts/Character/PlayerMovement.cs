@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -20,16 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
 
     [Header("Control de Movimiento")]
-    public bool AllowMovement = true; // 🔒 Nueva variable: bloquea el movimiento hasta selección
+    public bool AllowMovement = true; // bloquea el movimiento hasta selección
 
     [Header("Escalada")]
     public float climbCheckDistance = 1f;
     public float climbSpeed = 2f;
     public bool isClimbing = false;
     public LayerMask climbableLayer;
-
-    private float climbReleaseTimer = 0f;
-    public float climbReleaseDelay = 0.3f;
 
     [Header("Stamina")]
     public float maxStamina = 100f;
@@ -40,7 +38,12 @@ public class PlayerMovement : MonoBehaviour
     public float staminaRegenRate = 8f;   // por segundo
     public bool canUseStamina = true;
     public Slider staminaBar;
-      public GameObject staminaUI;
+    public GameObject staminaUI;
+
+    [Header("Caída")]
+    public float fallHeightThreshold = 2f; // Altura mínima para mostrar animación de caída
+    private float fallStartY;
+    private bool isFallingAnimActive = false;
 
     void Awake()
     {
@@ -73,12 +76,53 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (controller == null || !controller.enabled) return;
+        // --- actualizaciones básicas ---
         isGrounded = controller.isGrounded;
 
-        if (isGrounded && velocity.y < 0)
+        // gravedad y reset rápido al tocar suelo
+        if (isGrounded && velocity.y < 0f)
+        {
             velocity.y = -2f;
+        }
 
-        // ⚠️ Si el movimiento está bloqueado, mantener solo animaciones idle
+        // --- DETECCIÓN DE CAÍDA PROLONGADA (solo una vez, no duplicada) ---
+        // Cuando empieza a bajar (velocidad negativa) y no estamos escalando, marcamos inicio de posible caída
+        if (!isGrounded && !isClimbing && velocity.y < -1f)
+        {
+            if (!isFallingAnimActive)
+            {
+                fallStartY = transform.position.y;   // altura inicial de la caída
+                isFallingAnimActive = true;
+            }
+
+            // ahora calculamos distancia de caída
+            float fallDistance = fallStartY - transform.position.y;
+
+            if (fallDistance > fallHeightThreshold)
+            {
+                // sólo activamos la animación si superó el umbral de altura
+                animator.SetBool("IsFalling", true);
+            }
+            else
+            {
+                animator.SetBool("IsFalling", false);
+            }
+        }
+        else
+        {
+            // si tocamos el suelo o estamos escalando, desactivamos la animación y reseteamos
+            if (isGrounded && animator.GetBool("IsFalling"))
+            {
+                animator.SetBool("IsFalling", false);
+                // opcional: animator.SetTrigger("Land");
+            }
+
+            isFallingAnimActive = false;
+            // NOTA: no rompemos otras animaciones aquí; sólo reseteamos la bandera.
+        }
+
+        // --- Si movimiento deshabilitado, salir (mantener idle) ---
         if (!AllowMovement)
         {
             animator.SetFloat("Speed", 0f);
@@ -87,17 +131,14 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Movimiento relativo a cámara
+        // --- Input & movimiento (idéntico a tu implementación) ---
         Vector3 camForward = Camera.main.transform.forward;
         Vector3 camRight = Camera.main.transform.right;
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
+        camForward.y = 0f; camRight.y = 0f;
+        camForward.Normalize(); camRight.Normalize();
 
         Vector3 move = camRight * moveInput.x + camForward * moveInput.y;
 
-        // Rotación
         if (move.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
@@ -105,76 +146,111 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
 
-        // Movimiento físico
         float currentSpeed = (isRunning && canUseStamina) ? runSpeed : walkSpeed;
         controller.Move(move.normalized * currentSpeed * Time.deltaTime);
 
-        // Animaciones
-        float speedPercent = move.magnitude * (isRunning ? 1f : 0.5f);
-        animator.SetFloat("Speed", speedPercent);
+        animator.SetFloat("Speed", move.magnitude * (isRunning ? 1f : 0.5f));
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetBool("IsRunning", isRunning);
 
+        // --- Escalada existente (sin cambios en lógica) ---
         if (isClimbing)
         {
-            RaycastHit hit;
-            Vector3 origin = transform.position + Vector3.up * 1f;
-
-            if (!Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
-            {
-                if (!controller.isGrounded)
-                {
-                    controller.Move(Vector3.up * 1f);
-                }
-                StopClimb();
-            }
-            else
-            {
-                bool pressingForward = moveInput.y > 0.5f;
-                bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
-
-                // 🚫 Si no tiene stamina, se cae automáticamente
-                if (!canUseStamina)
-                {
-                    StopClimb();
-                    return;
-                }
-
-                if (pressingForward && pressingCtrl)
-                {
-                    controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    StopClimb();
-                }
-            }
-
+            HandleClimb();
             HandleStamina();
             return;
         }
 
-        if (!isClimbing)
-        {
-            velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
-        }
-
-        if (!isGrounded && velocity.y < -1f && !isClimbing)
-        {
-            animator.SetBool("IsFalling", true);
-        }
-        else
-        {
-            animator.SetBool("IsFalling", false);
-        }
+        // Aplicar gravedad vertical
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
 
         HandleStamina();
     }
 
+    void HandleClimb()
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 1f;
+
+        // Comprobamos si todavía hay superficie escalable enfrente
+        if (!Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
+        {
+            // 🔹 Si no hay pared, verificamos si está en el borde superior
+            if (CheckForLedge())
+            {
+                StartCoroutine(ClimbLedge()); // hace la subida final
+            }
+            else
+            {
+                StopClimb();
+            }
+            return;
+        }
+
+        bool pressingForward = moveInput.y > 0.5f;
+        bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
+
+        // Si se quedó sin stamina → se suelta
+        if (!canUseStamina)
+        {
+            StopClimb();
+            return;
+        }
+
+        // Movimiento de escalada
+        if (pressingForward && pressingCtrl)
+        {
+            controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // Quieto en la pared (sin moverse)
+            controller.Move(Vector3.zero);
+        }
+    }
+
+    bool CheckForLedge()
+    {
+        // Raycast hacia arriba para ver si hay suelo encima del jugador
+        RaycastHit topHit;
+        Vector3 checkOrigin = transform.position + Vector3.up * 1.5f;
+
+        // Si hay suelo cerca arriba, significa que estamos tocando la cima
+        return Physics.Raycast(checkOrigin, Vector3.up, out topHit, 1f, climbableLayer) == false;
+    }
+
+    IEnumerator ClimbLedge()
+    {
+        // Evitamos repetir
+        if (!isClimbing) yield break;
+
+        isClimbing = false;
+        animator.SetBool("IsClimbing", false);
+
+        // Movimiento suave hacia arriba (simula subir al borde)
+        float climbUpTime = 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < climbUpTime)
+        {
+            controller.Move(Vector3.up * (climbSpeed * 1.5f) * Time.deltaTime);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Posicionar al jugador justo sobre el borde
+        controller.Move(Vector3.forward * 0.3f); // un empujoncito hacia adelante
+        velocity = Vector3.zero;
+
+        // Termina en idle
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsGrounded", true);
+    }
+
     void Jump()
     {
-        if (!AllowMovement || !canUseStamina) return; // ❌ Bloqueamos salto si no se ha seleccionado personaje
+        if (!AllowMovement || !canUseStamina) return; // Bloqueamos salto si no se ha seleccionado personaje
         
 
         if (isGrounded)
@@ -191,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
 
     void TryClimb()
     {
-        if (!AllowMovement || !canUseStamina) return; // ❌ Bloquea escalada sin selección 
+        if (!AllowMovement || !canUseStamina) return; // Bloquea escalada sin selección 
 
         bool pressingForward = moveInput.y > 0.5f;
         bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
