@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
   sunLight: {fileID: 119206833}
-  rotationSpeed: 5
+  rotationSpeed: 1
 --- !u!1 &136281900
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,7 +1634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
   sunLight: {fileID: 389347584}
-  rotationSpeed: 5
+  rotationSpeed: 1
 --- !u!114 &389347583
 MonoBehaviour:
   m_ObjectHideFlags: 0
