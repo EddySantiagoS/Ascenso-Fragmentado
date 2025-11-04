@@ -1116,6 +1116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 295876904}
+  - component: {fileID: 295876905}
   m_Layer: 0
   m_Name: mapa
   m_TagString: Untagged
@@ -1146,6 +1147,23 @@ Transform:
   - {fileID: 983730517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &295876905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295876903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a760cc197a25d594495634dffacb76a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NightEnvironmentManager
+  sunLight: {fileID: 119206833}
+  autoDetectObjects: 1
+  updateInterval: 1
+  nightStartAngle: 180
+  nightEndAngle: 360
 --- !u!1 &324795962
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,9 +1852,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
       insertIndex: -1
       addedObject: {fileID: 402665097}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 402665100}
   m_SourcePrefab: {fileID: 100100000, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
 --- !u!4 &402665095 stripped
 Transform:
@@ -1869,21 +1884,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39988706, y: 0.38789377, z: 1.0000002}
   m_Center: {x: 0.000007629394, y: 0.000052452102, z: -0.00000011920929}
---- !u!114 &402665100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402665096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adf4434c2f87e4541aa94032a4a8ba1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StreetLightController
-  lampLight: {fileID: 1348197606}
-  sunLight: {fileID: 119206833}
-  emissionObject: {fileID: 402665096}
 --- !u!1 &414165569
 GameObject:
   m_ObjectHideFlags: 0
@@ -5372,8 +5372,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 2.499999, y: 0}
+  m_SizeDelta: {x: -5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &885485355
 GameObject:
@@ -6336,6 +6336,8 @@ MonoBehaviour:
   runSpeed: 8
   gravity: -9.81
   jumpHeight: 3
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
   AllowMovement: 1
   climbCheckDistance: 1
   climbSpeed: 2
@@ -6343,7 +6345,6 @@ MonoBehaviour:
   climbableLayer:
     serializedVersion: 2
     m_Bits: 64
-  climbReleaseDelay: 0.3
   maxStamina: 100
   stamina: 0
   staminaDrainRun: 10
@@ -6353,6 +6354,7 @@ MonoBehaviour:
   canUseStamina: 1
   staminaBar: {fileID: 1902188941}
   staminaUI: {fileID: 1902188939}
+  fallHeightThreshold: 3
 --- !u!114 &1132802871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6734,6 +6736,8 @@ MonoBehaviour:
   spiralRadius: 8
   angleStep: 45
   startPoint: {fileID: 1543490506}
+  menuIslandPrefab: {fileID: 0}
+  segmentsPerMenuIsland: 50
 --- !u!64 &1208402948
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6984,9 +6988,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1270387230}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1270387233}
   m_SourcePrefab: {fileID: 100100000, guid: fc9cc171e42562a478ddc9e13be49612, type: 3}
 --- !u!4 &1270387227 stripped
 Transform:
@@ -7014,21 +7015,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39988706, y: 0.38789377, z: 1.0000002}
   m_Center: {x: 0.000007629394, y: 0.000052452102, z: -0.00000011920929}
---- !u!114 &1270387233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350696586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adf4434c2f87e4541aa94032a4a8ba1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StreetLightController
-  lampLight: {fileID: 1752669370}
-  sunLight: {fileID: 119206833}
-  emissionObject: {fileID: 350696586}
 --- !u!1 &1272742886
 GameObject:
   m_ObjectHideFlags: 1
@@ -7506,7 +7492,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1348197603}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10841,6 +10827,8 @@ MonoBehaviour:
   runSpeed: 8
   gravity: -9.81
   jumpHeight: 3
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
   AllowMovement: 1
   climbCheckDistance: 1
   climbSpeed: 2
@@ -10848,7 +10836,6 @@ MonoBehaviour:
   climbableLayer:
     serializedVersion: 2
     m_Bits: 64
-  climbReleaseDelay: 0.3
   maxStamina: 100
   stamina: 0
   staminaDrainRun: 10
@@ -10858,6 +10845,7 @@ MonoBehaviour:
   canUseStamina: 1
   staminaBar: {fileID: 1902188941}
   staminaUI: {fileID: 1902188939}
+  fallHeightThreshold: 3
 --- !u!1 &1930451516
 GameObject:
   m_ObjectHideFlags: 0

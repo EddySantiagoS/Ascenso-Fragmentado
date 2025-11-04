@@ -16,8 +16,15 @@ public class VerticalLevelGenerator : MonoBehaviour
     public float angleStep = 45f;
     public Transform startPoint;
 
+    [Header("Isla del menú")]
+    public GameObject menuIslandPrefab;
+    public int segmentsPerMenuIsland = 50;
+
+    private int totalSegmentsGenerated = 0;
+    private int nextMenuIslandAt = 0;
     private float currentAngle = 0f;
     private float currentHeight = 0f;
+    private bool awaitingPlayer = false;
     private List<GameObject> spawnedSegments = new List<GameObject>();
     private Dictionary<GameObject, Vector3> prefabSizes = new Dictionary<GameObject, Vector3>();
 
@@ -27,6 +34,7 @@ public class VerticalLevelGenerator : MonoBehaviour
         if (startPoint != null)
             currentHeight = startPoint.position.y;
 
+        nextMenuIslandAt = segmentsPerMenuIsland; 
         GenerateInitialMap();
     }
 
@@ -38,6 +46,13 @@ public class VerticalLevelGenerator : MonoBehaviour
 
     void SpawnNextSegment()
     {
+        if (totalSegmentsGenerated >= nextMenuIslandAt)
+        {
+            SpawnMenuIsland();
+            nextMenuIslandAt += segmentsPerMenuIsland;
+            return;
+        }
+
         // Elegimos tipo de bloque
         GameObject[] pool;
         int type = Random.Range(0, 3);
@@ -72,6 +87,7 @@ public class VerticalLevelGenerator : MonoBehaviour
         GameObject newSegment = Instantiate(prefab, spawnPos, prefab.transform.rotation, transform);
 
         spawnedSegments.Add(newSegment);
+        totalSegmentsGenerated++;
     }
 
     bool IsOverlapping(Vector3 position, Vector3 size)
@@ -122,7 +138,35 @@ public class VerticalLevelGenerator : MonoBehaviour
     // Para generar más bloques cuando el jugador sube
     public void GenerateMore(int count = 5)
     {
+        if (awaitingPlayer) return;
+
         for (int i = 0; i < count; i++)
             SpawnNextSegment();
+    }
+
+    void SpawnMenuIsland()
+    {
+        if (menuIslandPrefab == null) return;
+
+        Vector3 size = GetCachedPrefabSize(menuIslandPrefab);
+        float blockHeight = size.y;
+
+        // Sube un poco respecto al último bloque
+        currentHeight += maxVerticalGap + blockHeight;
+
+        // Mantiene la espiral
+        currentAngle += angleStep;
+        float rad = currentAngle * Mathf.Deg2Rad;
+
+        float x = Mathf.Cos(rad) * spiralRadius;
+        float z = Mathf.Sin(rad) * spiralRadius;
+
+        Vector3 spawnPos = new Vector3(x, currentHeight, z);
+
+        GameObject menuIsland = Instantiate(menuIslandPrefab, spawnPos, menuIslandPrefab.transform.rotation, transform);
+        spawnedSegments.Add(menuIsland);
+
+        Debug.Log($"Isla del menú generada en {spawnPos}");
+        awaitingPlayer = true;
     }
 }

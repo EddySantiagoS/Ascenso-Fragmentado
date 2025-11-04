@@ -6,10 +6,13 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Fuerza de movimientos")]
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
 
     private CharacterController controller;
     private Animator animator;
@@ -85,8 +88,7 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = -2f;
         }
-
-        // --- DETECCIÓN DE CAÍDA PROLONGADA (solo una vez, no duplicada) ---
+        
         // Cuando empieza a bajar (velocidad negativa) y no estamos escalando, marcamos inicio de posible caída
         if (!isGrounded && !isClimbing && velocity.y < -1f)
         {
@@ -162,7 +164,19 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Aplicar gravedad vertical
-        velocity.y += gravity * Time.deltaTime;
+        if (velocity.y < 0) // cayendo
+        {
+            velocity.y += gravity * fallMultiplier * Time.deltaTime;
+        }
+        else if (velocity.y > 0 && !Keyboard.current.spaceKey.isPressed) // soltó salto
+        {
+            velocity.y += gravity * lowJumpMultiplier * Time.deltaTime;
+        }
+        else // subida normal
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
         controller.Move(velocity * Time.deltaTime);
 
         HandleStamina();
