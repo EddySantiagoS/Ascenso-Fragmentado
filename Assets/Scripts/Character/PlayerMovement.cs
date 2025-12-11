@@ -182,85 +182,106 @@ public class PlayerMovement : MonoBehaviour
         HandleStamina();
     }
 
-    void HandleClimb()
-    {
-        RaycastHit hit;
-        Vector3 origin = transform.position + Vector3.up * 1f;
+ void HandleClimb()
+{
+    RaycastHit hit;
+    Vector3 wallOrigin = transform.position + Vector3.up * 1f;
 
-        // Comprobamos si todavía hay superficie escalable enfrente
-        if (!Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
+    // 1. ¿Todavía hay pared al frente?
+    bool wallAhead = Physics.Raycast(wallOrigin, transform.forward, out hit, climbCheckDistance, climbableLayer);
+
+    if (!wallAhead)
+    {
+        Debug.Log("👉 WALL LOST — comprobando borde...");
+
+        // 2. Revisar si estamos justo en un borde: ray hacia abajo justo adelante
+        Vector3 ledgeCheckOrigin =
+            transform.position +
+            transform.forward * (climbCheckDistance * 0.8f) +
+            Vector3.up * 1.3f;
+
+        bool ledgeDetected =
+            Physics.Raycast(ledgeCheckOrigin, Vector3.down, out hit, 2f, climbableLayer);
+
+        if (ledgeDetected)
         {
-            // 🔹 Si no hay pared, verificamos si está en el borde superior
-            if (CheckForLedge())
-            {
-                StartCoroutine(ClimbLedge()); // hace la subida final
-            }
-            else
-            {
-                StopClimb();
-            }
+            Debug.Log("🟢 BORDE DETECTADO → SUBIR");
+            StartCoroutine(ClimbLedge());
             return;
         }
 
-        bool pressingForward = moveInput.y > 0.5f;
-        bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
-
-        // Si se quedó sin stamina → se suelta
-        if (!canUseStamina)
-        {
-            StopClimb();
-            return;
-        }
-
-        // Movimiento de escalada
-        if (pressingForward && pressingCtrl)
-        {
-            controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
-        }
-        else
-        {
-            // Quieto en la pared (sin moverse)
-            controller.Move(Vector3.zero);
-        }
+        Debug.Log("🔴 No hay borde → soltar escalada");
+        StopClimb();
+        return;
     }
 
-    bool CheckForLedge()
+    // MOVIMIENTO DE ESCALADA NORMAL
+    bool pressingForward = moveInput.y > 0.5f;
+    bool pressingCtrl = Keyboard.current.leftCtrlKey.isPressed;
+
+    if (!canUseStamina)
     {
-        // Raycast hacia arriba para ver si hay suelo encima del jugador
-        RaycastHit topHit;
-        Vector3 checkOrigin = transform.position + Vector3.up * 1.5f;
-
-        // Si hay suelo cerca arriba, significa que estamos tocando la cima
-        return Physics.Raycast(checkOrigin, Vector3.up, out topHit, 1f, climbableLayer) == false;
+        StopClimb();
+        return;
     }
 
-    IEnumerator ClimbLedge()
+    if (pressingForward && pressingCtrl)
+        controller.Move(Vector3.up * climbSpeed * Time.deltaTime);
+}
+
+bool CheckForLedge()
+{
+    float height = controller.height; // tomamos la altura real del jugador
+
+    // 1. Chequeo de pared al nivel del pecho (evita falsas lecturas)
+    Vector3 wallOrigin = transform.position + Vector3.up * (height * 0.45f);
+
+    if (Physics.Raycast(wallOrigin, transform.forward, climbCheckDistance, climbableLayer))
+        return false;
+
+    // 2. Punto adelantado y más alto para encontrar el borde
+    Vector3 ledgeOrigin = transform.position
+        + transform.forward * (climbCheckDistance + 0.35f)
+        + Vector3.up * (height * 0.75f); // ANTES tenías 1.2f — muy bajo para tu personaje
+
+    Debug.DrawRay(ledgeOrigin, Vector3.down * 3f, Color.yellow, 1.5f);
+
+    // 3. Buscar piso hacia abajo
+    return Physics.Raycast(ledgeOrigin, Vector3.down, 3f, climbableLayer);
+}
+
+IEnumerator ClimbLedge()
+{
+    if (!isClimbing) yield break;
+
+    isClimbing = false;
+    animator.SetBool("IsClimbing", false);
+
+    // --- DESACTIVAR MOMENTOS DE CAÍDA ---
+    velocity = Vector3.zero;
+
+    controller.enabled = false; // BLOQUEA GRAVEDAD
+    float climbTime = 0.45f;
+    float elapsed = 0f;
+
+    Vector3 startPos = transform.position;
+    Vector3 endPos = startPos + Vector3.up * 1.2f + transform.forward * 0.4f;
+
+    while (elapsed < climbTime)
     {
-        // Evitamos repetir
-        if (!isClimbing) yield break;
-
-        isClimbing = false;
-        animator.SetBool("IsClimbing", false);
-
-        // Movimiento suave hacia arriba (simula subir al borde)
-        float climbUpTime = 0.5f;
-        float elapsed = 0f;
-
-        while (elapsed < climbUpTime)
-        {
-            controller.Move(Vector3.up * (climbSpeed * 1.5f) * Time.deltaTime);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Posicionar al jugador justo sobre el borde
-        controller.Move(Vector3.forward * 0.3f); // un empujoncito hacia adelante
-        velocity = Vector3.zero;
-
-        // Termina en idle
-        animator.SetBool("IsFalling", false);
-        animator.SetBool("IsGrounded", true);
+        transform.position = Vector3.Lerp(startPos, endPos, elapsed / climbTime);
+        elapsed += Time.deltaTime;
+        yield return null;
     }
+
+    transform.position = endPos;
+
+    controller.enabled = true;
+
+    // terminar animación
+    animator.SetBool("IsFalling", false);
+    animator.SetBool("IsGrounded", true);
+}
 
     void Jump()
     {
@@ -290,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
         {
             RaycastHit hit;
             Vector3 origin = transform.position + Vector3.up * 1f;
+            Debug.DrawRay(origin, transform.forward * climbCheckDistance, Color.red, 1f);
 
             if (Physics.Raycast(origin, transform.forward, out hit, climbCheckDistance, climbableLayer))
             {
