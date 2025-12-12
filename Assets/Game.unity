@@ -11688,10 +11688,10 @@ MonoBehaviour:
     m_Bits: 64
   maxStamina: 100
   stamina: 0
-  staminaDrainRun: 10
-  staminaDrainJump: 20
-  staminaDrainClimb: 15
-  staminaRegenRate: 8
+  staminaDrainRun: 1
+  staminaDrainJump: 5
+  staminaDrainClimb: 8
+  staminaRegenRate: 10
   canUseStamina: 1
   staminaBar: {fileID: 1902188941}
   staminaUI: {fileID: 1902188939}
@@ -21420,10 +21420,10 @@ MonoBehaviour:
     m_Bits: 64
   maxStamina: 100
   stamina: 0
-  staminaDrainRun: 10
-  staminaDrainJump: 20
-  staminaDrainClimb: 15
-  staminaRegenRate: 8
+  staminaDrainRun: 1
+  staminaDrainJump: 5
+  staminaDrainClimb: 8
+  staminaRegenRate: 10
   canUseStamina: 1
   staminaBar: {fileID: 1902188941}
   staminaUI: {fileID: 1902188939}
