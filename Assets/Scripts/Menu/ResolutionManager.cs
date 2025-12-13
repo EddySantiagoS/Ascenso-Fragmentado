@@ -15,17 +15,17 @@ public class ResolutionManager : MonoBehaviour
 
     public void SetResolution(int index)
     {
-        Debug.Log($"🔥 SetResolution llamado con index: {index}");
+        Debug.Log($"SetResolution llamado con index: {index}");
 
         if (index < 0 || index >= resolutions.Count)
         {
-            Debug.LogError("❌ Index fuera de rango");
+            Debug.LogError(" Index fuera de rango");
             return;
         }
 
         var res = resolutions[index];
         Screen.SetResolution(res.x, res.y, currentMode);
 
-        Debug.Log($"✅ Resolución solicitada: {res.x}x{res.y}");
+        Debug.Log($"Resolución solicitada: {res.x}x{res.y}");
     }
 }

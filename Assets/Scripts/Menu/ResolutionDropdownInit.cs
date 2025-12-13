@@ -7,7 +7,7 @@ public class ResolutionDropdownInit : MonoBehaviour
     {
         TMP_Dropdown dropdown = GetComponent<TMP_Dropdown>();
 
-        // Por ejemplo, iniciar en 1920x1080 (index 2)
+        
         dropdown.SetValueWithoutNotify(0);
     }
 }
