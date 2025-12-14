@@ -6,7 +6,6 @@ public class MusicSettings : MonoBehaviour
 {
     public AudioMixer mixer;
     public Slider musicSlider;
-
     const string MUSIC_PARAM = "MusicVolume";
 
     void Start()

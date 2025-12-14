@@ -54,6 +54,10 @@ public class PlayerMovement : MonoBehaviour
     private float fallStartY;
     private bool isFallingAnimActive = false;
 
+    [Header("Audio")]
+    public SFXManager sfxManager;
+    public AudioClip jumpSFX;
+
     void Awake()
     {
         controls = new PlayerControls();
@@ -305,6 +309,8 @@ IEnumerator ClimbLedge()
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
             animator.SetTrigger(Random.Range(0, 2) == 0 ? "Jump1" : "Jump2");
+
+            sfxManager.PlaySFX(jumpSFX);
         }
         else if (canDoubleJump && extraJumpsLeft > 0)
         {
@@ -312,6 +318,8 @@ IEnumerator ClimbLedge()
 
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             animator.SetTrigger("Jump2");
+
+            sfxManager.PlaySFX(jumpSFX);
         }
     }
 
