@@ -6,6 +6,12 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Habilidades")]
+    public bool canDoubleJump = false;
+    public int extraJumps = 0;
+    private int extraJumpsLeft;
+    public bool ignoreTimeScale = false;
+
     [Header("Fuerza de movimientos")]
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
@@ -69,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        extraJumpsLeft = extraJumps;
+
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         stamina = maxStamina;
@@ -79,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        float dt = ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime;
+
         if (controller == null || !controller.enabled) return;
         // --- actualizaciones básicas ---
         isGrounded = controller.isGrounded;
@@ -145,11 +155,11 @@ public class PlayerMovement : MonoBehaviour
         {
             float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, dt * 10f);
         }
 
         float currentSpeed = (isRunning && canUseStamina) ? runSpeed : walkSpeed;
-        controller.Move(move.normalized * currentSpeed * Time.deltaTime);
+        controller.Move(move.normalized * currentSpeed * dt);
 
         animator.SetFloat("Speed", move.magnitude * (isRunning ? 1f : 0.5f));
         animator.SetBool("IsGrounded", isGrounded);
@@ -166,18 +176,18 @@ public class PlayerMovement : MonoBehaviour
         // Aplicar gravedad vertical
         if (velocity.y < 0) // cayendo
         {
-            velocity.y += gravity * fallMultiplier * Time.deltaTime;
+            velocity.y += gravity * fallMultiplier * dt;
         }
         else if (velocity.y > 0 && !Keyboard.current.spaceKey.isPressed) // soltó salto
         {
-            velocity.y += gravity * lowJumpMultiplier * Time.deltaTime;
+            velocity.y += gravity * lowJumpMultiplier * dt;
         }
         else // subida normal
         {
-            velocity.y += gravity * Time.deltaTime;
+            velocity.y += gravity * dt;
         }
 
-        controller.Move(velocity * Time.deltaTime);
+        controller.Move(velocity * dt);
 
         HandleStamina();
     }
@@ -192,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
 
     if (!wallAhead)
     {
-        Debug.Log("👉 WALL LOST — comprobando borde...");
+        Debug.Log("WALL LOST — comprobando borde...");
 
         // 2. Revisar si estamos justo en un borde: ray hacia abajo justo adelante
         Vector3 ledgeCheckOrigin =
@@ -205,12 +215,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (ledgeDetected)
         {
-            Debug.Log("🟢 BORDE DETECTADO → SUBIR");
+            Debug.Log("BORDE DETECTADO → SUBIR");
             StartCoroutine(ClimbLedge());
             return;
         }
 
-        Debug.Log("🔴 No hay borde → soltar escalada");
+        Debug.Log("No hay borde → soltar escalada");
         StopClimb();
         return;
     }
@@ -285,18 +295,23 @@ IEnumerator ClimbLedge()
 
     void Jump()
     {
-        if (!AllowMovement || !canUseStamina) return; // Bloqueamos salto si no se ha seleccionado personaje
-        
+        if (!AllowMovement || !canUseStamina) return;
 
         if (isGrounded)
         {
+            extraJumpsLeft = extraJumps;
+
             stamina -= staminaDrainJump;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            int jumpType = Random.Range(0, 2);
-            if (jumpType == 0)
-                animator.SetTrigger("Jump1");
-            else
-                animator.SetTrigger("Jump2");
+
+            animator.SetTrigger(Random.Range(0, 2) == 0 ? "Jump1" : "Jump2");
+        }
+        else if (canDoubleJump && extraJumpsLeft > 0)
+        {
+            extraJumpsLeft--;
+
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetTrigger("Jump2");
         }
     }
 
