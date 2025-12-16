@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2b04078fa09ebec458aa72a264991391
+guid: 46d4f94a24d43084ca7a1c4db478e1b9
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Road to the Dead Forest
+  - Stonecross
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
